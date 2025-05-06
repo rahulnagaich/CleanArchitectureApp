@@ -10,7 +10,9 @@ namespace CleanArchitectureApp.API.Base
     {
         private IMediator? _mediator;
 
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!;
+        //protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!;
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>()
+            ?? throw new InvalidOperationException("IMediator service is not registered.");
 
         #region Actions
 
