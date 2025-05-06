@@ -37,3 +37,21 @@ Technologies Used
 •	A testing framework for writing unit tests.
 6.	FluentAssertions:
 •	Provides a fluent syntax for writing assertions in tests.
+
+Best Practices Followed
+1.	Separation of Concerns:
+•	Each layer has a distinct responsibility.
+•	Business logic is isolated from infrastructure and UI.
+2.	Standardized Responses:
+•	BaseResponse<T> ensures consistent API responses.
+3.	Dependency Injection:
+•	Dependencies (e.g., repositories, services) are injected into constructors.
+4.	Unit Testing:
+•	Comprehensive tests for entities, commands, and queries.
+5.	Database Seeding:
+•	Ensures the database has initial data for development and testing.
+6.	Asynchronous Programming:
+•	Uses async/await for non-blocking operations.
+---
+Conclusion
+This solution demonstrates a robust implementation of Clean Architecture in a .NET 8 application. It leverages modern technologies like EF Core, MediatR, and AutoMapper while adhering to best practices like separation of concerns, dependency injection, and unit testing. This approach ensures the application is maintainable, testable, and scalable for future growth.
