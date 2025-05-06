@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Domain.Entities
 {
-    public class Category: BaseEntity<Guid>
+    public class Category : BaseEntity<Guid>
     {
-        public string Name { get; private set; }
+        public required string Name { get; set; } // Added 'required' modifier
         public string? Description { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<Product> Products { get; private set; } = [];
+        public ICollection<Product> Products { get; set; } = [];
 
         [SetsRequiredMembers]
         public Category(Guid id, string name, string? description = null)
@@ -21,6 +21,14 @@ namespace CleanArchitectureApp.Domain.Entities
             Id = id;
             Name = name;
             Description = description;
+            IsActive = true;
+        }
+
+        // EF Core requires a parameterless constructor
+        [SetsRequiredMembers]
+        protected Category()
+        {
+            Name = string.Empty;
             IsActive = true;
         }
 

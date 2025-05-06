@@ -29,7 +29,7 @@ namespace CleanArchitectureApp.Domain.Entities
 
         public void AddItem(Guid productId, int quantity, decimal unitPrice)
         {
-            var item = new OrderProduct(Guid.NewGuid(), Id, productId, quantity, unitPrice);
+            var item = new OrderProduct( Id, productId, quantity, unitPrice);
 
             OrderProducts.Add(item);
         }

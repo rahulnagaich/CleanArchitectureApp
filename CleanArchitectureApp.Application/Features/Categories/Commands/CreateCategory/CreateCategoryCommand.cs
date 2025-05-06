@@ -6,5 +6,6 @@ namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCa
     public class CreateCategoryCommand : IRequest<BaseResponse<Guid>>
     {
         public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
     }
 }

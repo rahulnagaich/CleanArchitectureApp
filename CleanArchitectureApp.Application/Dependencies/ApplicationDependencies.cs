@@ -20,7 +20,7 @@ namespace CleanArchitectureApp.Application.Dependencies
         {
             services.AddApplicationMappings();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            //services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ResponseWrapperBehavior<,>));
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Domain.Entities
 {
-    public class OrderProduct : BaseEntity<Guid>
+    public class OrderProduct : AuditableEntity
     {
         public Guid OrderId { get; private set; }
         public Guid ProductId { get; private set; }
@@ -19,9 +19,8 @@ namespace CleanArchitectureApp.Domain.Entities
         public Product? Product { get; private set; }
 
         [SetsRequiredMembers]
-        public OrderProduct(Guid id, Guid orderId, Guid productId, int quantity, decimal unitPrice)
+        public OrderProduct(Guid orderId, Guid productId, int quantity, decimal unitPrice)
         {
-            Id = id;
             OrderId = orderId;
             ProductId = productId;
             Quantity = quantity;

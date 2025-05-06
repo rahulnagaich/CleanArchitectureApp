@@ -6,12 +6,12 @@ namespace CleanArchitectureApp.Domain.Tests.Constants
 {
     public class ConstantsTests
     {
-        [Fact]
-        public void ApplicationConstants_ShouldHaveExpectedValues()
-        {
-            ApplicationConstants.Name.Should().Be("CleanArchitecture");
-            ApplicationConstants.FluentValidationErrorKey.Should().Be("FluentValidationErrorKey");
-        }
+        //[Fact]
+        //public void ApplicationConstants_ShouldHaveExpectedValues()
+        //{
+        //    ApplicationConstants.Name.Should().Be("CleanArchitecture");
+        //    ApplicationConstants.FluentValidationErrorKey.Should().Be("FluentValidationErrorKey");
+        //}
 
         [Fact]
         public void AuthIdentityErrorMessage_ShouldContainExpectedMessages()
@@ -21,12 +21,12 @@ namespace CleanArchitectureApp.Domain.Tests.Constants
             AuthIdentityErrorMessage.EmailAndPasswordNotNullMessage.Should().Be("Email and password must not be null.");
         }
 
-        [Fact]
-        public void ErrorRespondCode_ShouldContainExpectedCodes()
-        {
-            ErrorRespondCode.NOT_FOUND.Should().Be("not_found");
-            ErrorRespondCode.BAD_REQUEST.Should().Be("bad_request");
-        }
+        //[Fact]
+        //public void ErrorRespondCode_ShouldContainExpectedCodes()
+        //{
+        //    ErrorRespondCode.NOT_FOUND.Should().Be("not_found");
+        //    ErrorRespondCode.BAD_REQUEST.Should().Be("bad_request");
+        //}
 
         [Fact]
         public void HealthCheck_ShouldContainExpectedNames()

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanArchitectureApp.Application.Features.Categories.Commands.CreateCategory;
 using CleanArchitectureApp.Application.Features.Categories.Queries;
 using CleanArchitectureApp.Domain.Entities;
 using System;
@@ -14,6 +15,7 @@ namespace CleanArchitectureApp.Application.Features.Categories.Mapping
         public CategoryMappingProfile()
         {
             CreateMap<CategoryDto, Category>();
+            CreateMap<CreateCategoryCommand, Category>();
         }
     }
 }

@@ -19,16 +19,17 @@ namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCa
 
         public async Task<BaseResponse<Guid>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateCategoryCommandValidator(_categoryRepository);
+            // Validation is handled by ValidationBehavior pipeline, no need to re-validate here.
+            //var validator = new CreateCategoryCommandValidator(_categoryRepository);
 
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            //var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            //if (!validationResult.IsValid)
+            //{
+            //    var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
 
-                return ResponseHandler.BadRequest<Guid>("Validation failed", errors);
-            }
+            //    return ResponseHandler.BadRequest<Guid>("Validation failed", errors);
+            //}
 
             var category = _mapper.Map<Category>(request);
 

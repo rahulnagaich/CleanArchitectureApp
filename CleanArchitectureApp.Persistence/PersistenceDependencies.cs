@@ -22,7 +22,10 @@ namespace CleanArchitectureApp.Persistence
 
             // Register DbContext
             services.AddDbContext<DatabaseService>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                //options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(configuration["AppSettings:ConnectionStrings:DefaultConnection"])
+                );
+
 
             // Bind interface to concrete
             services.AddScoped<IDatabaseService>(provider => provider.GetRequiredService<DatabaseService>());

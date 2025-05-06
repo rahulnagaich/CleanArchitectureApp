@@ -10,8 +10,8 @@ namespace CleanArchitectureApp.Persistence.Seeders
 {
     public class CategorySeeder
     {
-       public static readonly Guid categoryId1 = Guid.Parse("D57907AD-C4EA-441F-A51C-9156427C8634");
-       public static readonly Guid categoryId2 = Guid.Parse("DD3AFFFC-2BD7-49CE-95DE-2649C7D84481");
+       private static readonly Guid categoryId1 = Guid.Parse("D57907AD-C4EA-441F-A51C-9156427C8634");
+       private static readonly Guid categoryId2 = Guid.Parse("DD3AFFFC-2BD7-49CE-95DE-2649C7D84481");
         
         public static void Seed(ModelBuilder builder) => builder.Entity<Product>().HasData(CategoryList());
         

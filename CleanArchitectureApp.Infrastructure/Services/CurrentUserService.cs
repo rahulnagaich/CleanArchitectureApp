@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Infrastructure.Services
 {
-    public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
+    public class CurrentUserService : ICurrentUserService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+        //private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
         public string? UserId
         {

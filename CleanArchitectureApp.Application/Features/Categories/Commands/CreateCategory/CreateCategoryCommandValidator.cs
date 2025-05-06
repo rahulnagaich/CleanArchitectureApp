@@ -20,6 +20,9 @@ namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCa
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 10 characters.");
 
+            RuleFor(p => p.Description)
+                .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
+
             RuleFor(e => e)
              .MustAsync(CategoryNameAndDateUnique)
              .WithMessage("An category with the same name already exists.");

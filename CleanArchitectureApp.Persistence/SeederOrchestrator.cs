@@ -13,8 +13,8 @@ namespace CleanArchitectureApp.Persistence
         public static void Seed(ModelBuilder modelBuilder)
         {
             // Call all individual seeders here
-            CategorySeeder.Seed(modelBuilder);
-            ProductSeeder.Seed(modelBuilder);
+           // CategorySeeder.Seed(modelBuilder);
+           // ProductSeeder.Seed(modelBuilder);
         }
     }
 }

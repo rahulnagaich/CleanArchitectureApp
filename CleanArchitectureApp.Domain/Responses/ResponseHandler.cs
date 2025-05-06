@@ -90,7 +90,7 @@ namespace CleanArchitectureApp.Domain.Responses
                 Data = entity,
                 StatusCode = HttpStatusCode.Created,
                 Succeeded = true,
-                Message = ResponseMessage.Created
+                Message = string.IsNullOrWhiteSpace(message) ? ResponseMessage.Created: message
             };
         }
     }

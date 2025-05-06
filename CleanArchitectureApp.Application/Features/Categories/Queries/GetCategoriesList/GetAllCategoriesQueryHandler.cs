@@ -58,11 +58,12 @@ namespace CleanArchitectureApp.Application.Features.Categories.Queries.GetCatego
             // Execute manually inside Task.Run to make it "async"
             var result = await Task.Run(() =>
             {
-                return query
+                return query.OrderByDescending(p => p.CreatedDate)
                     .Select(p => new CategoryDto
                     {
                         Id = p.Id,
                         Name = p.Name,
+                        Description = p.Description,
                         IsActive = p.IsActive,
                     })
                     .ToList();
@@ -71,5 +72,4 @@ namespace CleanArchitectureApp.Application.Features.Categories.Queries.GetCatego
             return ResponseHandler.Success(result);
         }
     }
-
 }

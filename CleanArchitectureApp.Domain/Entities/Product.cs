@@ -12,9 +12,9 @@ namespace CleanArchitectureApp.Domain.Entities
     {
         public string Name { get; private set; }
         public decimal Price { get; private set; }
-        public Guid CategoryId { get; private set; }
+        public Guid CategoryId { get; set; }
 
-        public Category? Category { get; private set; }
+        public Category? Category { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = [];
 
