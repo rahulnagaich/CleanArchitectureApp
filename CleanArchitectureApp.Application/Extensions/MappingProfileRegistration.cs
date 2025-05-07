@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Application.Mapping
+namespace CleanArchitectureApp.Application.Extensions
 {
     public static class MappingProfileRegistration
     {

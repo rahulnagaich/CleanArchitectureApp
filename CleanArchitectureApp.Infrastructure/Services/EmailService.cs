@@ -1,24 +1,33 @@
-﻿using CleanArchitectureApp.Application.Interfaces.Infrastructure;
+﻿
+using CleanArchitectureApp.Application.Interfaces.Infrastructure;
 using CleanArchitectureApp.Domain.Requests;
 using CleanArchitectureApp.Infrastructure.Configuration;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.FeatureManagement;
 using MimeKit;
 using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Infrastructure.Services
 {
-    public class EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger) : IEmailService
+    public class EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger, IFeatureManager featureManager) : IEmailService
     {
         public MailSettings MailSettings { get; } = mailSettings.Value;
         public ILogger<EmailService> Logger { get; } = logger;
+        private readonly IFeatureManager _featureManager = featureManager;
 
         public async Task SendAsync(EmailRequest mailRequest)
         {
             try
             {
+                if (!await _featureManager.IsEnabledAsync(FeatureFlags.EnableEmailService))
+                {
+                    // Email feature is disabled
+                    return;
+                }
+
                 var email = new MimeMessage
                 {
                     Sender = MailboxAddress.Parse(MailSettings.SenderEmail)

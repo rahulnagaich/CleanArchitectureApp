@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CleanArchitectureApp.Application.Middleware;
+using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Application.Middleware
+namespace CleanArchitectureApp.Application.Extensions
 {
     public static class MiddlewareExtensions
     {

@@ -1,16 +1,10 @@
-﻿using CleanArchitectureApp.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using FluentValidation;
 using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Application.Exceptions;
+using System.Net;
+using System.Text.Json;
 
 namespace CleanArchitectureApp.Application.Middleware
 {
@@ -25,85 +19,46 @@ namespace CleanArchitectureApp.Application.Middleware
             {
                 await _next(context);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                //_logger.LogError(error, "An unexpected error occurred.");
-
-                var response = context.Response;
-                response.ContentType = "application/json";
-                var responseModel = new BaseResponse<string>() { Succeeded = false, Message = error?.Message };
-                //TODO:: cover all validation errors
-                switch (error)
-                {
-
-                    case UnauthorizedAccessException e:
-                        // custom application error
-                        responseModel.Message = error.Message;
-                        responseModel.StatusCode = HttpStatusCode.Unauthorized;
-                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        break;
-
-                    case ValidationException e:
-                        // custom validation error
-                        responseModel.Message = error.Message;
-                        responseModel.StatusCode = HttpStatusCode.UnprocessableEntity;
-                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
-                        break;
-                    case KeyNotFoundException e:
-                        // not found error
-                        responseModel.Message = error.Message; ;
-                        responseModel.StatusCode = HttpStatusCode.NotFound;
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
-                        break;
-
-                    //case DbUpdateException e:
-                    //    // can't update error
-                    //    responseModel.Message = e.Message;
-                    //    responseModel.StatusCode = HttpStatusCode.BadRequest;
-                    //    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    //    break;
-                    case Exception e:
-                        if (e.GetType().ToString() == "ApiException")
-                        {
-                            responseModel.Message += e.Message;
-                            responseModel.Message += e.InnerException == null ? "" : "\n" + e.InnerException.Message;
-                            responseModel.StatusCode = HttpStatusCode.BadRequest;
-                            response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        }
-                        responseModel.Message = e.Message;
-                        responseModel.Message += e.InnerException == null ? "" : "\n" + e.InnerException.Message;
-
-                        responseModel.StatusCode = HttpStatusCode.InternalServerError;
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        break;
-
-                    default:
-                        // unhandled error
-                        responseModel.Message = error == null? string.Empty : error.Message;
-                        responseModel.StatusCode = HttpStatusCode.InternalServerError;
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        break;
-                }
-                var result = JsonSerializer.Serialize(responseModel);
-
-                await response.WriteAsync(result);
-                LogAdditionalInfo(error, responseModel);
+                await HandleExceptionAsync(context, ex);
             }
         }
-        private void LogAdditionalInfo(Exception? error, BaseResponse<string> responseModel)
+
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            if (error != null) {
-                string logMessage = string.Empty;
+            var response = context.Response;
+            response.ContentType = "application/json";
 
-                 logMessage = $"Error Message: {error.Message}";
+            var responseModel = new BaseResponse<string>
+            {
+                Succeeded = false,
+                Message = exception.Message
+            };
+            var httpStatusCode = exception switch
+            {
+                ValidationException => (int)HttpStatusCode.UnprocessableEntity,
+                BadRequestException => (int)HttpStatusCode.BadRequest,
+                NotFoundException => (int)HttpStatusCode.NotFound,
+                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+                KeyNotFoundException => (int)HttpStatusCode.NotFound,
+                ApiException => (int)HttpStatusCode.InternalServerError,
+                _ => (int)HttpStatusCode.InternalServerError
+            };
 
-                _logger.LogInformation(logMessage, responseModel);
+            response.StatusCode = httpStatusCode;
+            responseModel.StatusCode = (HttpStatusCode)httpStatusCode;
 
-                if (error.InnerException != null)
-                {
-                    _logger.LogInformation($"Inner Exception: {error.InnerException.Message}");
-                }
+            // Add inner exception if exists
+            if (exception.InnerException != null)
+            {
+                responseModel.Message += $" | Inner: {exception.InnerException.Message}";
             }
+
+            _logger.LogError(exception, "Unhandled Exception - {Message}", exception.Message);
+
+            var resultJson = JsonSerializer.Serialize(responseModel);
+            await response.WriteAsync(resultJson);
         }
     }
 }

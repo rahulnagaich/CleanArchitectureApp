@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <Folder Include="Common\Constants\" />
     <Folder Include="Features\Categories\Commands\DeleteCategory\" />
     <Folder Include="Features\Categories\Commands\UpdateCategory\" />
     <Folder Include="Features\Categories\Queries\GetCategoriesListWithProducts\" />

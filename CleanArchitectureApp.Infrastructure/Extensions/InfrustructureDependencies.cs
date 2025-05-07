@@ -3,8 +3,9 @@ using CleanArchitectureApp.Infrastructure.Configuration;
 using CleanArchitectureApp.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
 
-namespace CleanArchitectureApp.Infrastructure.Dependencies
+namespace CleanArchitectureApp.Infrastructure.Extensions
 {
     public static class InfrustructureDependencies
     {
@@ -17,6 +18,7 @@ namespace CleanArchitectureApp.Infrastructure.Dependencies
             services.AddTransient<IEmailService, EmailService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             //services.AddHttpContextAccessor(); // need to fix
+            services.AddFeatureManagement();
 
             return services;
         }

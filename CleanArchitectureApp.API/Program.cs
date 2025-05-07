@@ -1,12 +1,12 @@
 using CleanArchitectureApp.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using CleanArchitectureApp.Persistence;
-using CleanArchitectureApp.Application.Dependencies;
-using CleanArchitectureApp.Application.Middleware;
-using CleanArchitectureApp.Infrastructure.Dependencies;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR; // Ensure MediatR namespace is included
+using MediatR;
+using CleanArchitectureApp.Application.Extensions;
+using CleanArchitectureApp.Infrastructure.Extensions;
+using CleanArchitectureApp.Persistence.Extensions;
+using CleanArchitectureApp.API.Extensions; // Ensure MediatR namespace is included
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,9 +24,16 @@ builder.Services.AddApplicationDependencies(builder.Configuration)
 
 builder.Services.AddControllers();
 
+builder.Services.AddSwaggerDocumentation(); // Add Swagger via extension
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwaggerDocumentation(); // Use Swagger via extension
+}
 
 app.UseHttpsRedirection();
 

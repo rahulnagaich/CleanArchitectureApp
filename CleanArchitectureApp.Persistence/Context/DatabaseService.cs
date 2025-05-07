@@ -1,6 +1,7 @@
 ﻿using CleanArchitectureApp.Application.Interfaces.Infrastructure;
 using CleanArchitectureApp.Domain.Common;
 using CleanArchitectureApp.Domain.Entities;
+using CleanArchitectureApp.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

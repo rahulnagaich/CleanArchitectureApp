@@ -10,9 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitectureApp.Application.Mapping;
 
-namespace CleanArchitectureApp.Application.Dependencies
+namespace CleanArchitectureApp.Application.Extensions
 {
     public static class ApplicationDependencies
     {
@@ -23,9 +22,8 @@ namespace CleanArchitectureApp.Application.Dependencies
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ResponseWrapperBehavior<,>));
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
+            
             return services;
         }
     }

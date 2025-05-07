@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Persistence
+namespace CleanArchitectureApp.Persistence.Extensions
 {
     public static class ModelBuilderExtensions
     {
