@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Utilities
+namespace CleanArchitectureApp.Shared.Serialization.Converters
 {
     public class TrimmingConverter : JsonConverter<string>
     {

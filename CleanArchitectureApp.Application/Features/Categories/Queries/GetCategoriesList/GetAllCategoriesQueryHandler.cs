@@ -2,7 +2,7 @@
 using CleanArchitectureApp.Application.Features.Products.Queries.GetProductDetail;
 using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
 using CleanArchitectureApp.Domain.Entities;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;

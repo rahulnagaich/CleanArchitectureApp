@@ -1,6 +1,6 @@
 ﻿
 using CleanArchitectureApp.Application.Interfaces.Infrastructure;
-using CleanArchitectureApp.Domain.Requests;
+using CleanArchitectureApp.Shared.Requests;
 using CleanArchitectureApp.Infrastructure.Configuration;
 using MailKit.Net.Smtp;
 using MailKit.Security;

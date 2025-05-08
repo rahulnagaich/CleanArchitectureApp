@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Responses;
 using CleanArchitectureApp.Application.Exceptions;
 using System.Net;
 using System.Text.Json;

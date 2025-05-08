@@ -19,6 +19,5 @@ namespace CleanArchitectureApp.Application.Exceptions
                 Errors.Add(failure.ErrorMessage);
             }
         }
-
     }
 }

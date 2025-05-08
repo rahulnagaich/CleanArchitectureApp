@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;

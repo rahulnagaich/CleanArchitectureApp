@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Responses
+namespace CleanArchitectureApp.Shared.Responses
 {
     public class BaseResponse<T>
     {

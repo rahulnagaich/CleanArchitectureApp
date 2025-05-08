@@ -1,5 +1,4 @@
-﻿using CleanArchitectureApp.Shared.Requests;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Interfaces.Infrastructure
 {
-    public interface IEmailService
+    public interface ICsvExporter
     {
-        Task SendAsync(EmailRequest request);
+        byte[] ExportToCsv<T>(List<T> records);
     }
 }

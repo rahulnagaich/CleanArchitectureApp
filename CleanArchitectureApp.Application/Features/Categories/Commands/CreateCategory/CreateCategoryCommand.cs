@@ -1,4 +1,5 @@
-﻿using CleanArchitectureApp.Domain.Responses;
+﻿
+using CleanArchitectureApp.Shared.Responses;
 using MediatR;
 
 namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCategory

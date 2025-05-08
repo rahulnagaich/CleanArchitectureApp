@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Requests
+namespace CleanArchitectureApp.Shared.Requests
 {
     public class BaseRequest
     {

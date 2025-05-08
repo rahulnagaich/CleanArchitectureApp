@@ -1,5 +1,4 @@
-﻿using CleanArchitectureApp.Domain.Common;
-using CleanArchitectureApp.Domain.Constants;
+﻿using CleanArchitectureApp.Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Responses
+namespace CleanArchitectureApp.Shared.Responses
 {
     public static class ResponseHandler
     {

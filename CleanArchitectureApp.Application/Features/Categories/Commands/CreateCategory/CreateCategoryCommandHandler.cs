@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
 using System.Net;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Responses;
 
 namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCategory
 {

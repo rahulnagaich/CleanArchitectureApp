@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Requests
+namespace CleanArchitectureApp.Shared.Requests
 {
     public class PagedRequest : BaseRequest
     {
@@ -16,7 +16,7 @@ namespace CleanArchitectureApp.Domain.Requests
         public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            set => _pageSize = value > maxPageSize ? maxPageSize : value;
         }
 
         public string? OrderBy { get; set; }

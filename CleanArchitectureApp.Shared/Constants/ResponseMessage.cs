@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Constants
+namespace CleanArchitectureApp.Shared.Constants
 {
     public static class ResponseMessage
     {

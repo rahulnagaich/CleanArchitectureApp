@@ -1,5 +1,5 @@
 ﻿using CleanArchitectureApp.Domain.Entities;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;

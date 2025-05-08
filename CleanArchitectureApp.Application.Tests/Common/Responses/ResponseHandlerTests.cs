@@ -1,6 +1,6 @@
 ﻿
-using CleanArchitectureApp.Domain.Constants;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Constants;
+using CleanArchitectureApp.Shared.Responses;
 using FluentAssertions;
 using System.Collections.Generic;
 using System.Net;

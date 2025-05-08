@@ -2,7 +2,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
-using CleanArchitectureApp.Domain.Responses;
+using CleanArchitectureApp.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using CleanArchitectureApp.Domain.Requests;
+﻿using CleanArchitectureApp.Shared.Requests;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

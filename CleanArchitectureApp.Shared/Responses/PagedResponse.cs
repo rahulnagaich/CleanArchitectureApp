@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Domain.Responses
+namespace CleanArchitectureApp.Shared.Responses
 {
     public class PagedResponse<T> : BaseResponse<T>
     {
