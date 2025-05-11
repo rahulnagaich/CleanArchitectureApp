@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using CleanArchitectureApp.Application.Features.Categories.Queries;
 using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
 using CleanArchitectureApp.Domain.Entities;
@@ -13,24 +14,19 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Features.Orders.Queries.GetOrderDetail
 {
-    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, BaseResponse<Order>>
+    public class GetOrderByIdQueryHandler(IOrderRepository repository, IMapper mapper) : IRequestHandler<GetOrderByIdQuery, BaseResponse<OrderDto>>
     {
-        private readonly IOrderRepository _repository;
-
-        public GetOrderByIdQueryHandler(IOrderRepository repository)
+        public async Task<BaseResponse<OrderDto>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
+            var orderDto = await repository.GetProjectedByIdAsync<OrderDto>(
+                filter: x => x.Id == request.Id,
+                configurationProvider: mapper.ConfigurationProvider,
+                cancellationToken: cancellationToken);
 
-        public async Task<BaseResponse<Order>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
-        {
-            var order = await _repository.GetByIdAsync(request.Id,cancellationToken);
+            if (orderDto is null)
+                return ResponseHandler.NotFound<OrderDto>("Order not found.");
 
-            if (order == null)
-                return ResponseHandler.NotFound<Order>("Order not found.");
-
-            return ResponseHandler.Success(order);
+            return ResponseHandler.Success(orderDto);
         }
     }
-
 }

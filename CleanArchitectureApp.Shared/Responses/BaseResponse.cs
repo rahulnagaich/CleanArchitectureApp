@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
+using System.Text.Json.Serialization;
 
 namespace CleanArchitectureApp.Shared.Responses
 {
@@ -20,7 +16,6 @@ namespace CleanArchitectureApp.Shared.Responses
         }
         public BaseResponse(string message)
         {
-            Succeeded = false;
             Message = message;
         }
         public BaseResponse(string message, bool succeeded)
@@ -28,10 +23,16 @@ namespace CleanArchitectureApp.Shared.Responses
             Succeeded = succeeded;
             Message = message;
         }
+
         public HttpStatusCode StatusCode { get; set; }
+
         public bool Succeeded { get; set; } = false;
+
         public string? Message { get; set; } = string.Empty;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<string> Errors { get; set; } = [];
+
         public T? Data { get; set; }= default!;
     }
 }

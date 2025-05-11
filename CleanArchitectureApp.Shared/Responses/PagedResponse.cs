@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitectureApp.Shared.Responses
+﻿namespace CleanArchitectureApp.Shared.Responses
 {
     public class PagedResponse<T> : BaseResponse<T>
     {
+        private readonly List<T> data = []; 
+
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
@@ -15,11 +11,11 @@ namespace CleanArchitectureApp.Shared.Responses
         public int TotalPages { get; set; }
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
-        public new List<T> Data { get; set; } = [];
+        public new List<T> Data { get; set; } = new List<T>();
 
-        public PagedResponse(List<T> data, int pageNumber, int pageSize, int count)
+        public PagedResponse(List<T> data, int pageNumber, int pageSize, int count, string v)
         {
-            Data = data;
+            Data = data ?? [];
             PageNumber = pageNumber;
             PageSize = pageSize;
             TotalCount = count;

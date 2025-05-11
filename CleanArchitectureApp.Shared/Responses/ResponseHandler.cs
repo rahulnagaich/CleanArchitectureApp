@@ -1,10 +1,5 @@
 ﻿using CleanArchitectureApp.Shared.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Shared.Responses
 {
@@ -92,5 +87,35 @@ namespace CleanArchitectureApp.Shared.Responses
                 Message = string.IsNullOrWhiteSpace(message) ? ResponseMessage.Created: message
             };
         }
+
+        public static PagedResponse<T> PagedSuccess<T>(PagedResponse<T> pagedResponse, string? message = null)
+        {
+            return new PagedResponse<T>(pagedResponse.Data, pagedResponse.PageNumber, pagedResponse.PageSize, pagedResponse.TotalCount, string.IsNullOrWhiteSpace(message) ? ResponseMessage.Success : message)
+            {
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+
+        public static PagedResponse<T> PagedBadRequest<T>(string message, List<string>? errors = null)
+        {
+            return new PagedResponse<T>([], 0, 0, 0, string.IsNullOrWhiteSpace(message) ? ResponseMessage.BadRequest : message)
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                Succeeded = false,
+                Errors = errors ?? []
+            };
+        }
+
+        public static PagedResponse<T> PagedNotFound<T>(string? message = null)
+        {
+            return new PagedResponse<T>([], 0, 0, 0, string.IsNullOrWhiteSpace(message) ? ResponseMessage.NotFound : message)
+            {
+                StatusCode = HttpStatusCode.NotFound,
+                Succeeded = false,
+                Message = string.IsNullOrWhiteSpace(message) ? ResponseMessage.NotFound : message
+            };
+        }
+
+        // we can add more paged versions as needed, e.g., Unauthorized, Conflict, etc.
     }
 }

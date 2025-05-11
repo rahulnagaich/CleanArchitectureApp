@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace CleanArchitectureApp.Shared.Serialization.Converters
+﻿namespace CleanArchitectureApp.Shared.Serialization.Converters
 {
     public class DecimalPrecisionConverter(int precision) : JsonConverter<decimal>
     {

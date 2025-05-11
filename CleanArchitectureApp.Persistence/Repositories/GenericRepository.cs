@@ -2,6 +2,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
+using CleanArchitectureApp.Persistence.Extensions;
 using CleanArchitectureApp.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,7 +25,7 @@ namespace CleanArchitectureApp.Persistence.Repositories
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<T>();
         }
-        
+
         //public virtual async Task<T> GetByIdAsync(int id)
         //{
         //    return await _dbContext.Set<T>().FindAsync(id);
@@ -36,17 +37,12 @@ namespace CleanArchitectureApp.Persistence.Repositories
         //    return entity ?? default!;//default! is used to suppress the compiler warning in case T is a non-nullable reference type
         //}
 
-        public async Task<T?> GetByIdAsync(object id, CancellationToken cancellationToken = default) => await _dbSet.FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
-
         //public async Task<IReadOnlyList<T>> GetAllAsync()
         //{
         //    return await _dbContext
         //         .Set<T>()
         //         .ToListAsync();
         //}
-
-        public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default) => await _dbSet.ToListAsync(cancellationToken);
-
 
         //public async Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize)
         //{
@@ -57,15 +53,6 @@ namespace CleanArchitectureApp.Persistence.Repositories
         //        .AsNoTracking()
         //        .ToListAsync();
         //}
-
-        public async Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
-        }
 
         public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
@@ -108,20 +95,17 @@ namespace CleanArchitectureApp.Persistence.Repositories
             return _dbContext.Set<T>().AsQueryable();
         }
 
-        //public async Task<bool> ExistsAsync(CancellationToken cancellationToken = default)
-        //{
-        //    return await Get().AnyAsync(cancellationToken);
-        //}
+        public async Task<T?> GetByIdAsync(object id, CancellationToken cancellationToken = default)
+            => await _dbSet.FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
 
-        public async Task<List<TResult>> GetProjectedListAsync<TResult>(Expression<Func<T, bool>> filter, IConfigurationProvider configurationProvider,CancellationToken cancellationToken=default)
-        {
-            return await _dbSet
-                        .Where(filter)
-                        .ProjectTo<TResult>(configurationProvider)
-                        .ToListAsync(cancellationToken: cancellationToken);
-        }
+        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
+            => await _dbSet.ToListAsync(cancellationToken);
 
-        public async Task<TResult?> GetProjectedByIdAsync<TResult>(Expression<Func<T, bool>> filter, IConfigurationProvider configurationProvider,CancellationToken cancellationToken=default)
+        public async Task<IReadOnlyList<T>> GetAllReadOnlyListAsync(CancellationToken cancellationToken = default)
+            => await _dbSet.ToListAsync(cancellationToken);
+
+        public async Task<TResult?> GetProjectedByIdAsync<TResult>(Expression<Func<T, bool>> filter, 
+            IConfigurationProvider configurationProvider, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Set<T>()
                 .Where(filter)
@@ -129,32 +113,115 @@ namespace CleanArchitectureApp.Persistence.Repositories
                 .FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<PagedResponse<T>> ToPagedListAsync(int pageNumber, int pageSize)
-        { 
-            var count = await _dbSet.CountAsync();
-            var items = await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            return new PagedResponse<T>(items, pageNumber, pageSize, count);
+        public async Task<PagedResponse<T>> GetPagedListAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+        {
+            var count = await _dbSet.CountAsync(cancellationToken);
+            var items = await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync(cancellationToken);
+            return new PagedResponse<T>(items, pageNumber, pageSize, count, string.Empty); // Added the missing 'v' parameter with a default value
         }
 
+        public async Task<PagedResponse<T>> GetPagedListAsync(
+            int pageNumber, int pageSize,
+            string? orderBy = null, string sortDirection = "ASC",
+            Expression<Func<T, bool>>? filter = null,
+            CancellationToken cancellationToken = default)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            query = query.ApplySorting(orderBy, sortDirection); // Dynamic ordering
+            query = query.ApplyPaging(pageNumber, pageSize); // Apply paging
+
+            var count = await query.CountAsync(cancellationToken);
+            var items = await query.ToListAsync(cancellationToken);
+
+            return new PagedResponse<T>(items, pageNumber, pageSize, count, string.Empty); // Added the missing 'v' parameter with a default value
+        }
+
+        public async Task<PagedResponse<TResult>> GetProjectedPagedListAsync<TResult>(
+            IConfigurationProvider configurationProvider,
+            int pageNumber, int pageSize,
+            string? orderBy = null, string sortDirection = "ASC",
+            Expression<Func<T, bool>>? filter = null,
+            CancellationToken cancellationToken = default)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            var count = await query.CountAsync(cancellationToken);
+
+            var projectedQuery = query.ProjectTo<TResult>(configurationProvider);
+
+            projectedQuery = projectedQuery.ApplySorting(orderBy, sortDirection);
+            projectedQuery = projectedQuery.ApplyPaging(pageNumber, pageSize);
+
+            var items = await projectedQuery.ToListAsync(cancellationToken);
+
+            return new PagedResponse<TResult>(items, pageNumber, pageSize, count, string.Empty); 
+        }
+
+        //// Removed one of the duplicate methods causing CS0111 error
         //public async Task<PagedResponse<T>> GetPagedListAsync(
-        //    int pageNumber,
-        //    int pageSize,
-        //    string orderBy = null,
-        //    string sortDirection = "ASC",
-        //    Expression<Func<T, bool>> filter = null)
+        //    int pageNumber, int pageSize,
+        //    string? orderBy = null, string sortDirection = "ASC",
+        //    Expression<Func<T, bool>>? filter = null,
+        //    CancellationToken cancellationToken = default)
         //{
         //    IQueryable<T> query = _dbSet;
 
         //    if (filter != null)
         //        query = query.Where(filter);
 
-        //    if (!string.IsNullOrEmpty(orderBy))
-        //    {
-        //        var sort = $"{orderBy} {sortDirection}";
-        //        query = query.OrderBy(sort); // Dynamic ordering
-        //    }
+        //    query = query.ApplySorting(orderBy, sortDirection); // Dynamic ordering
+        //    query = query.ApplyPaging(pageNumber, pageSize); // Apply paging
 
-        //    return await query.ToPagedListAsync(pageNumber, pageSize);
+        //    var count = await query.CountAsync(cancellationToken);
+        //    var items = await query.ToListAsync(cancellationToken);
+
+        //    return new PagedResponse<T>(items, pageNumber, pageSize, count, string.Empty);
+        //}
+
+        public async Task<PagedResponse<T>> GetProjectedPagedListAsync<TResult>(int pageNumber, int pageSize,
+            IConfigurationProvider configurationProvider, CancellationToken cancellationToken = default)
+        {
+            var count = await _dbSet.CountAsync(cancellationToken);
+
+            IQueryable<T> query = _dbSet;
+            query = (IQueryable<T>)query.ProjectTo<TResult>(configurationProvider);
+            query = query.ApplyPaging(pageNumber, pageSize); // Apply paging
+
+            var items = await query.ToListAsync(cancellationToken);
+
+            return new PagedResponse<T>(items, pageNumber, pageSize, count, string.Empty);
+        }
+
+        // Removed one of the duplicate methods causing CS0111 error
+        //public async Task<PagedResponse<TResult>> GetProjectedPagedListAsync<TResult>(
+        //    IConfigurationProvider configurationProvider,
+        //    int pageNumber, int pageSize,
+        //    string? orderBy = null, string sortDirection = "ASC",
+        //    Expression<Func<T, bool>>? filter = null,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    IQueryable<T> query = _dbSet;
+
+        //    if (filter != null)
+        //        query = query.Where(filter);
+
+        //    var count = await query.CountAsync(cancellationToken);
+
+        //    var projectedQuery = query.ProjectTo<TResult>(configurationProvider);
+
+        //    projectedQuery = projectedQuery.ApplySorting(orderBy, sortDirection);
+        //    projectedQuery = projectedQuery.ApplyPaging(pageNumber, pageSize);
+
+        //    var items = await projectedQuery.ToListAsync(cancellationToken);
+
+        //    return new PagedResponse<TResult>(items, pageNumber, pageSize, count, string.Empty);
         //}
     }
 }

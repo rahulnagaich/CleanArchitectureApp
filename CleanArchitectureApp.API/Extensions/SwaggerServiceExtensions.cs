@@ -9,12 +9,17 @@ namespace CleanArchitectureApp.API.Extensions
         {
             services.AddSwaggerGen(options =>
             {
+                options.CustomSchemaIds(type => type.FullName);
+
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "MyApp API",
+                    Title = "Clean Architecture",
                     Version = "v1",
-                    Description = "Clean Architecture based API using ASP.NET Core"
+                    Description = "Clean Architecture based API using ASP.NET Core",
                 });
+
+                // Hide schema definitions section
+                options.DocumentFilter<HideSchemasDocumentFilter>();
 
                 // JWT Authentication support in Swagger
                 //options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -59,7 +64,7 @@ namespace CleanArchitectureApp.API.Extensions
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "MyApp API v1");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Clean Architecture API v1");
                 options.RoutePrefix = string.Empty; // Swagger at root
             });
 

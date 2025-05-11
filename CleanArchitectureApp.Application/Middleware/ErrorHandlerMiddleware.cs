@@ -30,14 +30,15 @@ namespace CleanArchitectureApp.Application.Middleware
             var response = context.Response;
             response.ContentType = "application/json";
 
-            var responseModel = new BaseResponse<string>
+            var responseModel = new BaseResponse<object> // Changed generic type to object
             {
                 Succeeded = false,
+                Data = string.Empty,
                 Message = exception.Message
             };
             var httpStatusCode = exception switch
             {
-                ValidationException => (int)HttpStatusCode.UnprocessableEntity,
+                RequestValidationException => (int)HttpStatusCode.UnprocessableEntity,
                 BadRequestException => (int)HttpStatusCode.BadRequest,
                 NotFoundException => (int)HttpStatusCode.NotFound,
                 UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
@@ -49,10 +50,19 @@ namespace CleanArchitectureApp.Application.Middleware
             response.StatusCode = httpStatusCode;
             responseModel.StatusCode = (HttpStatusCode)httpStatusCode;
 
-            // Add inner exception if exists
-            if (exception.InnerException != null)
+            if (exception is RequestValidationException validationEx)
             {
-                responseModel.Message += $" | Inner: {exception.InnerException.Message}";
+                responseModel.Message = "Validation failed.";
+                responseModel.Data = validationEx.Errors; 
+            }
+            else
+            {
+                responseModel.Message = exception.Message;
+
+                if (exception.InnerException != null)
+                {
+                    responseModel.Message += $" | Inner: {exception.InnerException.Message}";
+                }
             }
 
             _logger.LogError(exception, "Unhandled Exception - {Message}", exception.Message);

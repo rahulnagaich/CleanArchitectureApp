@@ -1,22 +1,13 @@
-﻿using AutoMapper;
-using CleanArchitectureApp.Application.Features.Products.Queries.GetProductDetail;
-using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
-using CleanArchitectureApp.Domain.Entities;
+﻿using CleanArchitectureApp.Application.Interfaces.Persistence.Repositories;
 using CleanArchitectureApp.Shared.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Features.Categories.Queries.GetCategoriesList
 {
-    public class GetAllCategoriesQueryHandler(ICategoryRepository categoryRepository, IMapper mapper) : IRequestHandler<GetAllCategoriesQuery, BaseResponse<List<CategoryDto>>>
+    public class GetAllCategoriesQueryHandler(ICategoryRepository categoryRepository) : IRequestHandler<GetAllCategoriesQuery, BaseResponse<List<CategoryDto>>>
     {
-        private readonly ICategoryRepository _repository = categoryRepository;
-        private readonly IMapper _mapper = mapper;
+        //private readonly ICategoryRepository _repository = categoryRepository;
+        //private readonly IMapper _mapper = mapper;
 
         public async Task<BaseResponse<List<CategoryDto>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
@@ -26,18 +17,25 @@ namespace CleanArchitectureApp.Application.Features.Categories.Queries.GetCatego
 
             //return ResponseHandler.Success(categoryDto);
 
-            var query = _repository.Get();
+            var query = categoryRepository.Get();
 
-            // Apply filters
-            if (!string.IsNullOrWhiteSpace(request.Name))
-            {
-                query = query.Where(p => p.Name.Contains(request.Name));
-            }
-
+            // Filters (optional, domain-specific)
             if (request.CategoryId.HasValue)
-            {
-                query = query.Where(p => p.Id == request.CategoryId.Value);
-            }
+                query = query.Where(c => c.Id == request.CategoryId);
+
+            if (!string.IsNullOrWhiteSpace(request.Name))
+                query = query.Where(c => c.Name.Contains(request.Name));
+
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+                query = query.Where(c =>
+                    c.Name.Contains(request.SearchTerm) ||
+                    (c.Description != null && c.Description.Contains(request.SearchTerm)));
+
+            // Apply Sorting & Paging using extensions
+            //query = query
+            //    .ApplySorting(request.OrderBy, request.SortDirection)
+            //    .ApplyPaging(request.PageNumber, request.PageSize);
+
 
             //.OrderBy(p => p.Name)
             //.Skip((pageNumber - 1) * pageSize)

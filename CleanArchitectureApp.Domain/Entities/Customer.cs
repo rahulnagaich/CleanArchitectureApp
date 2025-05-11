@@ -1,19 +1,11 @@
-﻿using CleanArchitectureApp.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitectureApp.Domain.Entities
+﻿namespace CleanArchitectureApp.Domain.Entities
 {
     public class Customer : BaseEntity<Guid>
     {
         public string FullName { get; private set; }
         public string Email { get; private set; }
 
-        public ICollection<Order> Orders { get; private set; } = new List<Order>();
+        public ICollection<Order> Orders { get; private set; } = [];
 
         [SetsRequiredMembers]
         public Customer(Guid id, string fullName, string email)
@@ -23,11 +15,16 @@ namespace CleanArchitectureApp.Domain.Entities
             Email = email;
         }
 
+        public Customer()
+        {
+            FullName = string.Empty;
+            Email = string.Empty;
+        }
+
         public void UpdateContact(string fullName, string email)
         {
             FullName = fullName;
             Email = email;
         }
     }
-
 }

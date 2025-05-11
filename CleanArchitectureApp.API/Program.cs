@@ -1,8 +1,3 @@
-using CleanArchitectureApp.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using MediatR;
 using CleanArchitectureApp.Application.Extensions;
 using CleanArchitectureApp.Infrastructure.Extensions;
 using CleanArchitectureApp.Persistence.Extensions;

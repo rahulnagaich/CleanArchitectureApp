@@ -9,14 +9,8 @@ using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Features.Orders.Queries.GetOrderDetail
 {
-    public class GetOrderByIdQuery : IRequest<BaseResponse<Order>>
+    public class GetOrderByIdQuery(Guid id) : IRequest<BaseResponse<OrderDto>>
     {
-        public Guid Id { get; }
-
-        public GetOrderByIdQuery(Guid id)
-        {
-            Id = id;
-        }
+        public Guid Id { get; } = id;
     }
-
 }

@@ -1,12 +1,4 @@
-﻿using CleanArchitectureApp.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitectureApp.Domain.Entities
+﻿namespace CleanArchitectureApp.Domain.Entities
 {
     public class Product: BaseEntity<Guid>
     {
@@ -25,6 +17,12 @@ namespace CleanArchitectureApp.Domain.Entities
             Name = name;
             Price = price;
             CategoryId = categoryId;
+        }
+
+        // EF Core requires a parameterless constructor
+        public Product()
+        {
+            Name = string.Empty; Price = 0; CategoryId = Guid.Empty;
         }
 
         public void UpdatePrice(decimal newPrice) => Price = newPrice;

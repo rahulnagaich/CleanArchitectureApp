@@ -20,21 +20,21 @@ namespace CleanArchitectureApp.Application.Features.Products.Queries.GetProductD
 
         public async Task<BaseResponse<ProductDto>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            //var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
+            var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
-            //if (product == null)
-            //{
-            //    return ResponseHandler.NotFound<ProductDto>("Product not found.");
-            //}
-
-            var productDto = await _productRepository.GetProjectedByIdAsync<ProductDto>(p=> p.Id == request.Id, _mapper.ConfigurationProvider, cancellationToken);
-
-            if (productDto == null)
+            if (product == null)
             {
                 return ResponseHandler.NotFound<ProductDto>("Product not found.");
             }
 
-            //var productDto = _mapper.Map<ProductDto>(product);
+            //var productDto = await _productRepository.GetProjectedByIdAsync<ProductDto>(p=> p.Id == request.Id, _mapper.ConfigurationProvider, cancellationToken);
+
+            //if (productDto == null)
+            //{
+            //    return ResponseHandler.NotFound<ProductDto>("Product not found.");
+            //}
+
+            var productDto = _mapper.Map<ProductDto>(product);
 
             return ResponseHandler.Success(productDto);
         }

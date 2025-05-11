@@ -14,8 +14,8 @@ namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCa
 {
     public class CreateCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper) : IRequestHandler<CreateCategoryCommand, BaseResponse<Guid>>
     {
-        private readonly ICategoryRepository _categoryRepository = categoryRepository;
-        private readonly IMapper _mapper = mapper;
+        //private readonly ICategoryRepository _categoryRepository = categoryRepository;
+        //private readonly IMapper _mapper = mapper;
 
         public async Task<BaseResponse<Guid>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
@@ -31,9 +31,9 @@ namespace CleanArchitectureApp.Application.Features.Categories.Commands.CreateCa
             //    return ResponseHandler.BadRequest<Guid>("Validation failed", errors);
             //}
 
-            var category = _mapper.Map<Category>(request);
+            var category = mapper.Map<Category>(request);
 
-            await _categoryRepository.CreateAsync(category, cancellationToken);
+            await categoryRepository.CreateAsync(category, cancellationToken);
 
             return ResponseHandler.Created(category.Id,"Category created successfully");
         }

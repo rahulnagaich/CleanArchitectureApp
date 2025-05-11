@@ -22,7 +22,7 @@ namespace CleanArchitectureApp.Persistence.Context
 
         public DatabaseService(DbContextOptions<DatabaseService> options, ICurrentUserService currentUserService, IDateTimeService dateTimeService) : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;//you don't need to explicitly call .AsNoTracking() for each query, because tracking is already disabled globally
             _currentUserService = currentUserService;
             _dateTimeService = dateTimeService;
         }

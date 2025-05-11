@@ -1,12 +1,4 @@
-﻿using CleanArchitectureApp.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CleanArchitectureApp.Domain.Entities
+﻿namespace CleanArchitectureApp.Domain.Entities
 {
     public class Order : BaseEntity<Guid>
     {
@@ -27,6 +19,11 @@ namespace CleanArchitectureApp.Domain.Entities
             OrderDate = DateTime.UtcNow;
         }
 
+        public Order()
+        {
+            CustomerId = Guid.NewGuid();
+        }
+
         public void AddItem(Guid productId, int quantity, decimal unitPrice)
         {
             var item = new OrderProduct( Id, productId, quantity, unitPrice);
@@ -34,5 +31,4 @@ namespace CleanArchitectureApp.Domain.Entities
             OrderProducts.Add(item);
         }
     }
-
 }

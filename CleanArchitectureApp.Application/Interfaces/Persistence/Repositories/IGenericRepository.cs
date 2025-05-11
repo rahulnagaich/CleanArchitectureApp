@@ -11,16 +11,6 @@ namespace CleanArchitectureApp.Application.Interfaces.Persistence.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {
-        IQueryable<T> Get();
-
-        //Task<T> GetByIdAsync(int id);
-
-        Task<T?> GetByIdAsync(object id, CancellationToken cancellationToken = default);
-
-        Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default);
-
-        Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
-
         Task AddAsync(T entity, CancellationToken cancellationToken = default);
 
         Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default);
@@ -33,12 +23,40 @@ namespace CleanArchitectureApp.Application.Interfaces.Persistence.Repositories
 
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
 
-        //Task<bool> ExistsAsync(CancellationToken cancellationToken = default);
+        IQueryable<T> Get();
 
-        Task<List<TResult>> GetProjectedListAsync<TResult>(Expression<Func<T, bool>> filter, IConfigurationProvider configurationProvider, CancellationToken cancellationToken = default);
+        Task<T?> GetByIdAsync(object id, CancellationToken cancellationToken = default);
 
-        Task<TResult?> GetProjectedByIdAsync<TResult>(Expression<Func<T, bool>> filter, IConfigurationProvider configurationProvider, CancellationToken cancellationToken = default);
+        Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<PagedResponse<T>> ToPagedListAsync(int pageNumber, int pageSize);
+        Task<IReadOnlyList<T>> GetAllReadOnlyListAsync(CancellationToken cancellationToken = default);
+
+        Task<TResult?> GetProjectedByIdAsync<TResult>(Expression<Func<T, bool>> filter,
+                    IConfigurationProvider configurationProvider, CancellationToken cancellationToken = default);
+
+        Task<PagedResponse<T>> GetPagedListAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
+
+        Task<PagedResponse<T>> GetPagedListAsync(
+                    int pageNumber, int pageSize,
+                    string? orderBy = null, string sortDirection = "ASC",
+                    Expression<Func<T, bool>>? filter = null,
+                    CancellationToken cancellationToken = default);
+
+        Task<PagedResponse<T>> GetProjectedPagedListAsync<TResult>(int pageNumber, int pageSize,
+                    IConfigurationProvider configurationProvider, CancellationToken cancellationToken = default);
+
+        //Task<PagedResponse<T>> GetProjectedPagedListAsync<TResult>(
+        //            IConfigurationProvider configurationProvider,
+        //            int pageNumber, int pageSize,
+        //            string? orderBy = null, string sortDirection = "ASC",
+        //            Expression<Func<T, bool>>? filter = null,
+        //            CancellationToken cancellationToken = default);
+
+        Task<PagedResponse<TResult>> GetProjectedPagedListAsync<TResult>(
+            IConfigurationProvider configurationProvider,
+            int pageNumber, int pageSize,
+            string? orderBy = null, string sortDirection = "ASC",
+            Expression<Func<T, bool>>? filter = null,
+            CancellationToken cancellationToken = default);
     }
 }

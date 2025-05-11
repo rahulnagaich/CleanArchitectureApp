@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
+using CleanArchitectureApp.Application.Features.Products.Commands.CreateProduct;
 using CleanArchitectureApp.Application.Features.Products.Queries;
 using CleanArchitectureApp.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Features.Products.Mapping
 {
@@ -15,6 +11,8 @@ namespace CleanArchitectureApp.Application.Features.Products.Mapping
         {
             CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.CategoryName, static opt => opt.MapFrom(static src => src.Category == null? string.Empty: src.Category.Name));
+
+            CreateMap<CreateProductCommand, Product>();
         }
     }
 }

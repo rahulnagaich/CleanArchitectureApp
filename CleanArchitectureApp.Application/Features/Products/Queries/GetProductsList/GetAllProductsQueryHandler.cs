@@ -16,16 +16,18 @@ namespace CleanArchitectureApp.Application.Features.Products.Queries.GetProducts
 {
     public class GetAllProductsQueryHandler(IProductRepository repository, IMapper mapper) : IRequestHandler<GetAllProductsQuery, BaseResponse<List<ProductDto>>>
     {
-        private readonly IProductRepository _repository = repository;
-        private readonly IMapper _mapper = mapper;
-
         public async Task<BaseResponse<List<ProductDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var products = await _repository.GetAllAsync(cancellationToken);
-            var productDto = _mapper.Map<List<ProductDto>>(products);
-            return ResponseHandler.Success(productDto);
+            var products = await repository.GetAllAsync(cancellationToken);
 
+            if (products == null || !products.Any())
+            {
+                return ResponseHandler.NotFound<List<ProductDto>>("No products found.");
+            }
+
+            var productDto = mapper.Map<List<ProductDto>>(products);
+
+            return ResponseHandler.Success(productDto);
         }
     }
-
 }

@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
+using CleanArchitectureApp.Application.Features.Orders.Commands.CreateOrder;
 using CleanArchitectureApp.Application.Features.Orders.Queries;
 using CleanArchitectureApp.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Features.Orders.Mapping
 {
@@ -14,9 +10,9 @@ namespace CleanArchitectureApp.Application.Features.Orders.Mapping
         public OrderMappingProfile()
         {
           CreateMap<Order, OrderDto>()
-         .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderProducts));
+         .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderProducts));
 
-            CreateMap<OrderProduct, OrderItemDto>();
+            CreateMap<CreateOrderCommand, Order>();
         }
     }
 }

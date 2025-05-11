@@ -15,22 +15,18 @@ namespace CleanArchitectureApp.Application.Features.Categories.Queries.GetCatego
 {
     public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository, IMapper mapper) : IRequestHandler<GetCategoryByIdQuery, BaseResponse<CategoryDto>>
     {
-        private readonly ICategoryRepository _repository = categoryRepository;
-        private readonly IMapper _mapper = mapper;
-
         public async Task<BaseResponse<CategoryDto>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            var category = await _repository.GetByIdAsync(request.Id);
+            var category = await categoryRepository.GetByIdAsync(request.Id, cancellationToken);
            
             if (category == null)
             {
                 return ResponseHandler.NotFound<CategoryDto>("Category not found.");
             }
 
-            var categoryDto = _mapper.Map<CategoryDto>(category);
+            var categoryDto = mapper.Map<CategoryDto>(category);
 
             return ResponseHandler.Success(categoryDto);
         }
     }
-
 }

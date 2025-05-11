@@ -1,11 +1,8 @@
-﻿using CleanArchitectureApp.Application.Features.Categories.Mapping;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CleanArchitectureApp.Application.Features.Categories.Mapping;
+using CleanArchitectureApp.Application.Features.Customers.Mapping;
+using CleanArchitectureApp.Application.Features.Orders.Mapping;
 using CleanArchitectureApp.Application.Features.Products.Mapping;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitectureApp.Application.Extensions
 {
@@ -17,7 +14,9 @@ namespace CleanArchitectureApp.Application.Extensions
             {
                 // Registers all profiles in assembly
                 cfg.AddMaps(typeof(CategoryMappingProfile).Assembly);
-                cfg.AddMaps(typeof(ProductMappingProfile).Assembly); 
+                cfg.AddMaps(typeof(ProductMappingProfile).Assembly);
+                cfg.AddMaps(typeof(CustomerMappingProfile).Assembly);
+                cfg.AddMaps(typeof(OrderMappingProfile).Assembly);
             });
 
             return services;
