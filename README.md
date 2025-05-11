@@ -111,12 +111,6 @@ Benefits of Using global using Directives
 3.	Centralized Management:
 •	Common namespaces are managed in one place, making it easier to update them if needed.
 ---
-When Not to Use global using
-•	File-Specific Dependencies:
-•	If a namespace is only used in a single file, it's better to include it locally rather than globally.
-•	Avoid Polluting the Global Scope:
-•	Be cautious about adding too many global usings, as it can lead to ambiguity or conflicts.
----
 Analysis of Projects Under src Folder
 The projects under the src folder include:
 1.	CleanArchitectureApp.Application
