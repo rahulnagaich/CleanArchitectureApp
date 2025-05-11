@@ -248,7 +248,6 @@ Design Patterns
 •	Used in MediatR pipeline behaviors to add cross-cutting concerns like validation and logging.
 4.	Factory Pattern:
 •	Likely used for creating instances of domain objects or services.
-
 ---
 Conclusion
 This solution demonstrates a robust implementation of Clean Architecture in a .NET 8 application. It leverages modern technologies like EF Core, MediatR, and AutoMapper while adhering to best practices like separation of concerns, dependency injection, and unit testing. This approach ensures the application is maintainable, testable, and scalable for future growth.
