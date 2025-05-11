@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitectureApp.Application.Mappings;
 
-namespace CleanArchitectureApp.Application.Extensions
+namespace CleanArchitectureApp.Application.DependencyInjection
 {
     public static class ApplicationDependencies
     {

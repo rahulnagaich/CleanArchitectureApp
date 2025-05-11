@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitectureApp.Persistence.Extensions
+namespace CleanArchitectureApp.Persistence.DependencyInjection
 {
     public static class PersistenceDependencies
     {

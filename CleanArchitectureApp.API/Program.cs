@@ -1,7 +1,8 @@
 using CleanArchitectureApp.Application.Extensions;
-using CleanArchitectureApp.Infrastructure.Extensions;
-using CleanArchitectureApp.Persistence.Extensions;
-using CleanArchitectureApp.API.Extensions; // Ensure MediatR namespace is included
+using CleanArchitectureApp.API.Extensions;
+using CleanArchitectureApp.Application.DependencyInjection;
+using CleanArchitectureApp.Infrastructure.DependencyInjection;
+using CleanArchitectureApp.Persistence.DependencyInjection; // Ensure MediatR namespace is included
 
 var builder = WebApplication.CreateBuilder(args);
 

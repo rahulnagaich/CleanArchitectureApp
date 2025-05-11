@@ -4,7 +4,7 @@ using CleanArchitectureApp.Application.Features.Customers.Mapping;
 using CleanArchitectureApp.Application.Features.Orders.Mapping;
 using CleanArchitectureApp.Application.Features.Products.Mapping;
 
-namespace CleanArchitectureApp.Application.Extensions
+namespace CleanArchitectureApp.Application.Mappings
 {
     public static class MappingProfileRegistration
     {

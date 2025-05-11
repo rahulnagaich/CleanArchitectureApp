@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 
-namespace CleanArchitectureApp.Infrastructure.Extensions
+namespace CleanArchitectureApp.Infrastructure.DependencyInjection
 {
     public static class InfrustructureDependencies
     {
