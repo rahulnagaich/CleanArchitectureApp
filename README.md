@@ -1,6 +1,6 @@
 Solution Overview
 The solution is structured around Clean Architecture, which emphasizes separation of concerns and independence of frameworks, UI, and infrastructure. It ensures that the core business logic is independent of external dependencies, making the application maintainable, testable, and scalable.
-
+---
 Key Concepts
 1.	Clean Architecture Principles:
 •	Core Independence: The core domain (entities, use cases) is independent of frameworks, databases, or UI.
@@ -29,7 +29,7 @@ Key Concepts
 •	Standardized request/response models are used, such as BaseResponse<T> and PagedResponse<T>.
 9.	Behavioral Pipelines:
 •	Middleware-like behaviors (e.g., validation, exception handling) are implemented using MediatR pipeline behaviors.
-
+---
 Technologies Used
 1.	.NET 8:
 •	The latest version of the .NET platform, offering performance improvements and modern features.
@@ -47,9 +47,8 @@ Technologies Used
 •	Used for API documentation and testing.
 8.	Microsoft.Extensions:
 •	Provides abstractions for configuration, logging, and dependency injection.
-
+---
 Code Walkthrough
-
 1. Domain Layer
 •	Entities: Represent the core business objects (e.g., Category, Product).
 •	AuditableEntity: A base class for tracking creation and modification metadata.
@@ -62,7 +61,7 @@ Code Walkthrough
 •	Seeders: Populate the database with initial data.
 4. Testing
 •	Unit tests ensure the correctness of entities, commands, queries, and response handlers.
-
+---
 Best Practices Followed
 1.	Separation of Concerns:
 •	Each layer has a distinct responsibility, ensuring maintainability and scalability.
@@ -78,7 +77,7 @@ Best Practices Followed
 •	Each layer has extension methods for configuring services, ensuring modularity.
 7.	Exception Handling:
 •	Centralized exception handling is implemented in the API layer.
-
+---
 Best Practices for Managing Namespaces
 1.	Follow the Project Structure:
 •	Namespaces should reflect the folder structure of your project. This makes it easier to locate files and understand their purpose.
@@ -103,7 +102,7 @@ Step 2: Create a GlobalUsings.cs File
 In .NET 6+, you can create a GlobalUsings.cs file in the root of your project (or in a folder like Common or Shared) and define the common namespaces there.
 Step 4: Keep Layer-Specific Namespaces
 For domain-specific or layer-specific namespaces (e.g., CleanArchitectureApp.Domain.Common), keep them as they are. These namespaces provide context about the file's purpose and location in the architecture.
----
+
 Benefits of Using global using Directives
 1.	Reduces Boilerplate Code:
 •	Eliminates repetitive using statements in every file.
@@ -117,7 +116,7 @@ When Not to Use global using
 •	If a namespace is only used in a single file, it's better to include it locally rather than globally.
 •	Avoid Polluting the Global Scope:
 •	Be cautious about adding too many global usings, as it can lead to ambiguity or conflicts.
-
+---
 Analysis of Projects Under src Folder
 The projects under the src folder include:
 1.	CleanArchitectureApp.Application
@@ -125,6 +124,127 @@ The projects under the src folder include:
 3.	CleanArchitectureApp.Shared
 4.	CleanArchitectureApp.API
 
+Folder Descriptions
+1.	Controllers/:
+•	Contains API controllers that handle HTTP requests and responses.
+•	Example: OrdersController.cs, ProductsController.cs.
+•	Why: Centralizes request handling logic.
+•	Benefits: Keeps the API layer focused on routing and request/response handling.
+2.	Extensions/:
+•	Contains extension methods for configuring services and middleware.
+•	Example: ServiceCollectionExtensions.cs, ApplicationBuilderExtensions.cs.
+•	Why: Modularizes service and middleware configuration.
+•	Benefits: Improves readability and reusability.
+3.	Middlewares/:
+•	Contains custom middleware for handling cross-cutting concerns like exception handling or logging.
+•	Example: ExceptionMiddleware.cs.
+•	Why: Centralizes cross-cutting concerns.
+•	Benefits: Simplifies the pipeline and ensures consistent behavior.
+4.	Models/:
+•	Contains API-specific models like request/response DTOs.
+•	Example: OrderRequestDto.cs, OrderResponseDto.cs.
+•	Why: Decouples API models from domain models.
+•	Benefits: Prevents leaking domain logic into the API layer.
+5.	Program.cs:
+•	The entry point of the application.
+•	Configures services, middleware, and the HTTP pipeline.
+6.	appsettings.json:
+•	Configuration file for application settings (e.g., connection strings, logging).
+
+   CleanArchitectureApp.Application/
+│
+├── Features/
+│   ├── Orders/
+│   │   ├── Commands/
+│   │   │   ├── CreateOrder/
+│   │   │   ├── DeleteOrder/
+│   │   │   ├── UpdateOrder/
+│   │   ├── Queries/
+│   │       ├── GetOrderById/
+│   │       ├── GetOrders/
+│   ├── Products/
+│       ├── Commands/
+│       ├── Queries/
+│
+├── Behaviors/
+├── Interfaces/
+├── Mappings/
+├── Validators/
+└── DependencyInjection/
+
+1.	Features/:
+•	Contains use cases grouped by feature (e.g., Orders, Products).
+•	Each feature has subfolders for Commands (write operations) and Queries (read operations).
+•	Example: CreateOrderCommand.cs, GetOrdersQuery.cs.
+•	Why: Organizes use cases by feature.
+•	Benefits: Improves discoverability and aligns with CQRS.
+2.	Behaviors/:
+•	Contains MediatR pipeline behaviors for cross-cutting concerns like validation or logging.
+•	Example: ValidationBehavior.cs.
+•	Why: Centralizes cross-cutting concerns.
+•	Benefits: Keeps handlers clean and focused.
+3.	Interfaces/:
+•	Contains application-specific interfaces (e.g., repositories, services).
+•	Example: IOrderRepository.cs.
+•	Why: Defines contracts for dependencies.
+•	Benefits: Promotes dependency inversion and testability.
+4.	Mappings/:
+•	Contains AutoMapper profiles for mapping between domain models and DTOs.
+•	Example: OrderMappingProfile.cs.
+•	Why: Centralizes mapping logic.
+•	Benefits: Simplifies object transformations.
+5.	Validators/:
+•	Contains FluentValidation validators for validating requests.
+•	Example: CreateOrderCommandValidator.cs.
+•	Why: Ensures input validation.
+•	Benefits: Prevents invalid data from reaching the domain layer.
+6.	DependencyInjection/:
+•	Contains extension methods for registering application services.
+•	Example: ApplicationServiceExtensions.cs.
+•	Why: Modularizes service registration.
+•	Benefits: Simplifies startup configuration.
+
+CleanArchitectureApp.Persistence/
+│
+│── DbContexts/
+│── Configurations/
+├── Seeders/
+├── Repositories/
+├── DependencyInjection/
+
+1.	Persistence/:
+•	Contains database-related logic.
+•	DbContexts/: EF Core DbContext classes.
+•	Configurations/: Fluent API configurations.
+•	Seeders/: Database seeding logic.
+•	Why: Centralizes database logic.
+•	Benefits: Simplifies database management.
+2.	Services/:
+•	Contains infrastructure-specific services (e.g., email, file storage).
+•	Example: EmailService.cs.
+•	Why: Implements application contracts.
+•	Benefits: Decouples infrastructure from application logic.
+3.	Repositories/:
+•	Contains repository implementations.
+•	Example: OrderRepository.cs.
+•	Why: Abstracts database access.
+•	Benefits: Promotes testability and separation of concerns.
+4.	DependencyInjection/:
+•	Contains extension methods for registering infrastructure services.
+•	Example: InfrastructureServiceExtensions.cs.
+
+Benefits of This Structure
+1.	Separation of Concerns:
+•	Each layer has a clear responsibility, improving maintainability.
+2.	Scalability:
+•	New features can be added without affecting other layers.
+3.	Testability:
+•	Each layer can be tested independently.
+4.	Reusability:
+•	Shared logic is centralized in the Shared project.
+5.	Readability:
+•	The structure is intuitive and easy to navigate.
+---
 Design Patterns
 1.	Mediator Pattern:
 •	Implemented using MediatR to decouple controllers from request handlers.
